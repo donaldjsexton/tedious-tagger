@@ -1,13 +1,3 @@
-import React from 'react';
-
-export default function KeybindsHelp() {
-  return (
-    <div className="keybinds-help">
-      <h3>Keybinds</h3>
-      <ul>
-        <li>Space: select</li>
-        <li>Shift: range select</li>
-      </ul>
-    </div>
-  );
+export default function KeybindsHelp(){
+  return <div style={{fontSize:12, color:'#666'}}>Keys: J/K navigate (later), S star, T tag (later). Batch ops above.</div>;
 }
