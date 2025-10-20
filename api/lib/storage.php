@@ -1,20 +1,20 @@
 <?php
-// storage helpers for tedious-tagger
+define('DATA_DIR', __DIR__ . '/../../data');
+define('DATA_FILE', DATA_DIR . '/photos.json');
+define('DATA_UPLOADS', DATA_DIR . '/uploads');
+define('DATA_THUMBS', DATA_DIR . '/thumbs');
 
-function data_file_path() {
-    return __DIR__ . '/../../data/photos.json';
-}
-
-function list_photos() {
-    $path = data_file_path();
-    if (!file_exists($path)) {
-        return [];
+function ensure_dirs(): void {
+    foreach ([DATA_DIR, DATA_UPLOADS, DATA_THUMBS] as $d) {
+        if (!is_dir($d)) mkdir($d, 0775, true);
     }
-    $json = file_get_contents($path);
-    return json_decode($json, true) ?: [];
+    if (!file_exists(DATA_FILE)) {
+        file_put_contents(DATA_FILE, json_encode(['tags'=>[], 'photos'=>[]], JSON_PRETTY_PRINT));
+    }
 }
-
-function save_photos($arr) {
-    $path = data_file_path();
-    file_put_contents($path, json_encode($arr, JSON_PRETTY_PRINT));
+function load_photos(): array {
+    return json_decode(file_get_contents(DATA_FILE), true) ?? ['tags'=>[], 'photos'=>[]];
+}
+function save_photos(array $data): void {
+    file_put_contents(DATA_FILE, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
