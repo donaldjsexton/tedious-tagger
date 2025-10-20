@@ -1,11 +1,10 @@
 import { useEffect, useState, useMemo } from 'react';
 import { api } from './store';
-import Uploader from '.components/Uploader.jsx';
+import Uploader from './components/Uploader.jsx';
 import Grid from './components/Grid.jsx';
 import SidebarTags from './components/SidebarTags.jsx';
 import BatchBar from './components/BatchBar.jsx';
-import KeybindsHelp from '/components/KeybindsHelp.jsx';
-import SidebarTags from './components/SidebarTags.jsx';
+import KeybindsHelp from './components/KeybindsHelp.jsx';
 
 export default function App() {
   const [tags, setTags] = useState ([]);
