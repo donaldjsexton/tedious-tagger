@@ -1,13 +1,11 @@
 <?php
-// placeholder for thumbnail handling
-
-function ensure_thumb($filename) {
-    $thumbDir = __DIR__ . '/../../data/thumbs';
-    if (!is_dir($thumbDir)) mkdir($thumbDir, 0755, true);
-    $thumbPath = $thumbDir . '/' . basename($filename);
-    if (!file_exists($thumbPath)) {
-        // naive copy for placeholder; in real setup generate a resized image
-        copy(__DIR__ . '/../../data/uploads/' . basename($filename), $thumbPath);
-    }
-    return $thumbPath;
+function make_thumb(sting $src, string $dst, int $maxW): void {
+    [$w,$h,$type] = getimagesize($src);
+    $ratio = $h ? ($w / $h) : 1;
+    $nw = $maxW; $nh = (int)round($maxW / $ratio);
+    $srcImg = ($type === IMAGETYPE_PNG) ? imagecreatefrompng($src) : imagecreatefromjpeg($src);
+    $dstImg = imagecreatetruecolor($nw, $nh);
+    imagecopyresampled($dstImg, $srcImg, 0,0,0,0, $nw,$nh, $w,$h);
+    if ($type === IMAGETYPE_PNG) imagepng($dstImg, $dst); else imagejpeg($dstImg, $dst, 82);
+    imagedestroy($srcImg); imagedestroy($dstimg); 
 }
